@@ -16,25 +16,26 @@ def generate_string_from_json(animals_data):
         animal_info += "<li class='cards__item'>"
         try:
             name = animal['name']
-            animal_info += f"Name: {name}<br/>\n"
+            animal_info += f"<div class='card__title'> {name}</div>"
         except KeyError:
             pass
+        animal_info += "<p class='card__text'>"
         try:
             diet = animal['taxonomy']['order']
-            animal_info += f"Diet: {diet}<br/>\n"
+            animal_info += f"<strong>Diet:</strong> {diet}<br/>\n"
         except KeyError:
             pass
         try:
             location = ", ".join(animal['locations'])
-            animal_info += f"Location: {location}<br/>\n"
+            animal_info += f"<strong>Location:</strong> {location}<br/>\n"
         except KeyError:
             pass
         try:
             type = animal['characteristics']['type']
-            animal_info += f"Type: {type}<br/>\n"
+            animal_info += f"<strong>Type:</strong> {type}<br/>\n"
         except KeyError:
             pass
-        animal_info += "</li>"
+        animal_info += "</p></li>"
     return(animal_info)
 
 def main():
