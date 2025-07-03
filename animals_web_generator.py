@@ -4,10 +4,9 @@ import requests
 REQUEST_URL = "https://api.api-ninjas.com/v1/animals?name={}"
 API_KEY = "pukp8Yg3NDo2oXht0bMqVw==zbvHVk0XgdOz2exE"
 
-def get_animal_data(REQUEST_URL):
+def get_animal_data(REQUEST_URL, animal_name):
   """ Gets animal data from the API """
-  name = 'fox'
-  REQUEST_URL = REQUEST_URL.format(name)
+  REQUEST_URL = REQUEST_URL.format(animal_name)
   response = requests.get(REQUEST_URL, headers={'X-Api-Key': API_KEY})
   if response.status_code == requests.codes.ok:
       return response.json()
@@ -59,13 +58,15 @@ def serialize_animal(animal_obj):
 
 
 def main():
-    animals_data = get_animal_data(REQUEST_URL)
+    user_animal = input("Enter a name of an animal:")
+    animals_data = get_animal_data(REQUEST_URL, user_animal)
     website_string = generate_html_string_from_json(animals_data)
 
     with open ("animals_template.html", "r") as origin_file:
         html_skeleton = origin_file.read()
     with open("animals.html", "w") as newfile:
         newfile.write(html_skeleton.replace("__REPLACE_ANIMALS_INFO__", website_string))
+    print("Website was successfully generated to the file animals.html")
 
 
 if __name__ == "__main__":
