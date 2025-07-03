@@ -12,6 +12,7 @@ def get_animal_data(REQUEST_URL, animal_name):
       return response.json()
   else:
       print("Error:", response.status_code, response.text)
+      return None
 
 
 def generate_html_string_from_json(animals_data):
@@ -60,7 +61,10 @@ def serialize_animal(animal_obj):
 def main():
     user_animal = input("Enter a name of an animal:")
     animals_data = get_animal_data(REQUEST_URL, user_animal)
-    website_string = generate_html_string_from_json(animals_data)
+    if animals_data == []:
+        website_string = f"<li class='cards__item'><h2>The animal '{user_animal}' doesn't exist :(.</h2></li>"
+    else:
+        website_string = generate_html_string_from_json(animals_data)
 
     with open ("animals_template.html", "r") as origin_file:
         html_skeleton = origin_file.read()
