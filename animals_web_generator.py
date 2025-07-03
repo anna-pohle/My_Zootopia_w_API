@@ -1,10 +1,18 @@
-import json
+import requests
 
 
-def load_data(file_path):
-  """ Loads a JSON file """
-  with open(file_path, "r") as handle:
-    return json.load(handle)
+REQUEST_URL = "https://api.api-ninjas.com/v1/animals?name={}"
+API_KEY = "pukp8Yg3NDo2oXht0bMqVw==zbvHVk0XgdOz2exE"
+
+def get_animal_data(REQUEST_URL):
+  """ Gets animal data from the API """
+  name = 'fox'
+  REQUEST_URL = REQUEST_URL.format(name)
+  response = requests.get(REQUEST_URL, headers={'X-Api-Key': API_KEY})
+  if response.status_code == requests.codes.ok:
+      return response.json()
+  else:
+      print("Error:", response.status_code, response.text)
 
 
 def generate_html_string_from_json(animals_data):
@@ -47,11 +55,11 @@ def serialize_animal(animal_obj):
     except KeyError:
         pass
     animal_info += "</p></li>"
-    return(animal_info)
+    return animal_info
 
 
 def main():
-    animals_data = load_data('animals_data.json')
+    animals_data = get_animal_data(REQUEST_URL)
     website_string = generate_html_string_from_json(animals_data)
 
     with open ("animals_template.html", "r") as origin_file:
